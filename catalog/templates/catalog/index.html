@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Library index</h1>
+    <ul>
+        <li>num of authors: {{num_authors}}</li>
+        <li>num of books: {{num_books}}</li>
+        <li>num of formats: {{num_formats}}</li>
+    </ul>
+    <h2>Books</h2>
+    <ul>
+        {% for book in  books%}
+        <li>{{book.title}} - {{book.price}}</li>
+        {% empty %}
+        No books
+        {% endfor %}
+    </ul>
+</body>
+</html>
