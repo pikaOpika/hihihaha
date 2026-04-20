@@ -1,49 +1,56 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from catalog.models import LiteraryFormat, Book, Author
+from django.db.models import F
 
-# Register your models here.
-# admin.site.register(LiteraryFormat)
-# admin.site.register(Book)
+
 
 class BookInline(admin.TabularInline):
     model = Book
     extra = 1
 
+class BookAuthorInline(admin.TabularInline):
+    model = Book.authors.through
+    extra = 1
+
 @admin.register(LiteraryFormat)
-class LiteraryFormatAdmin(admin.ModelAdmin):
-    inlines = [BookInline]
-
-# class AuthorInline(admin.TabularInline):
-#     model = Author
-#     extra = 1
+class LiteryFormatAdmin(admin.ModelAdmin):
+    search_fields = ["name",]
+    list_display = ["name",]
+    inlines = [BookInline,]
 
 
-# @admin.register(Book)
-# class BookAdmin(admin.ModelAdmin):
-#     list_display = ["title", "price", "format"]
-#     search_fields = ["title"]
-#     list_filter = ["title"]
-#     inlines = [AuthorInline]
-
-admin.site.register(Author, UserAdmin)
-
+@admin.register(Author)
+class AuthorAdmin(UserAdmin):
+    list_display = ["username", "first_name", "last_name", "is_staff"]
+    list_filter = ["is_staff"]
+    search_fields = ["username"]
+    inlines = [BookAuthorInline]
+    fieldsets = UserAdmin.fieldsets + (
+        (
+            "Additional info",
+            {
+                "fields": ("pseudonym",)
+            }
+        ),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (
+            "Additional info",
+            {
+                "fields": ("pseudonym",)
+            }
+        ),
+    )
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ["title", "price", "format"]
-    ordering = ["title"]
     search_fields = ["title"]
-    list_filter = ["format"]
-    actions = ["change_format"]
+    list_display = ["title", "price", "format"]
+    actions = ["get_discount"]
+    inlines = [BookAuthorInline]
 
-    def change_format(self, request, queryset):
-        novel = LiteraryFormat.objects.get(name="novel")
-        queryset.update(format=novel)
-
-    change_format.short_description = "Change format"
-    # fieldsets = [
-    #     ("main information", {
-    #         "fields": ["title", "format"]
-    #     })
-    # ]
+    def get_discount(self, request, queryset):
+        queryset.update(price=F("price") * 0.8)
+    
+    get_discount.short_description = "Get 20 discount"

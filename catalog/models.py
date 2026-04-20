@@ -13,6 +13,7 @@ class LiteraryFormat(models.Model):
 
 
 class Author(AbstractUser):
+    pseudonym = models.CharField(max_length=100, null=True, blank=True)
     class Meta:
         ordering = ("username",)
 
@@ -33,6 +34,9 @@ class Book(models.Model):
         settings.AUTH_USER_MODEL,
         related_name="books"
     )
+
+    def __str__(self):
+        return f"{self.title} (price: {self.price})"
 
     class Meta:
         ordering = ("title",)
