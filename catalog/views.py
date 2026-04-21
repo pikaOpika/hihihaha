@@ -5,12 +5,10 @@ from django.views import generic
 
 
 def index(request):
-    books = Book.objects.all()
     context = {
         "num_authors": Author.objects.count(),
         "num_books": Book.objects.count(),
         "num_formats": LiteraryFormat.objects.count(),
-        "books": books,
     }
     return render(request, "catalog/index.html", context=context)
 

@@ -7,12 +7,5 @@
     <li>num of books: {{num_books}}</li>
     <li>num of formats: {{num_formats}}</li>
 </ul>
-<h2>Books</h2>
-<ul>
-    {% for book in  books%}
-    <li>{{book.title}} - {{book.price}}</li>
-    {% empty %}
-    No books
-    {% endfor %}
-</ul>
+
 {% endblock  %}
