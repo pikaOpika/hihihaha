@@ -45,3 +45,5 @@ def search_books(request):
         queryset = queryset.filter(format__name=format_)
     return HttpResponse(queryset)
 
+class BookDetailView(generic.DetailView):
+    model = Book

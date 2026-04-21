@@ -5,7 +5,7 @@
 <ul>
 {% for book in books %}
 
-<li>{{ book }}</li>
+<li><a href="{% url "catalog:book-detail" book.id %}">{{ book }}</a></li>
 {% empty %}
 No books
 {% endfor %}
