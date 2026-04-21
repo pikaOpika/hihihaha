@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from catalog.models import Book, Author, LiteraryFormat
+from django.views import generic
 
 
 def index(request):
@@ -12,6 +13,23 @@ def index(request):
         "books": books,
     }
     return render(request, "catalog/index.html", context=context)
+
+
+
+class LiteraryFormatListView(generic.ListView):
+    model = LiteraryFormat
+    template_name = "catalog/format-list.html"
+    context_object_name = "formats"
+
+class BookListView(generic.ListView):
+    model = Book
+    template_name = "catalog/book-list.html"
+    context_object_name = "books"
+
+class AuthorListView(generic.ListView):
+    model = Author
+    template_name = "catalog/author-list.html"
+    context_object_name = "authors"
 
 
 def get_book(request, id):
@@ -28,3 +46,4 @@ def search_books(request):
     if format_:
         queryset = queryset.filter(format__name=format_)
     return HttpResponse(queryset)
+
