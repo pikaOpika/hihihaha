@@ -21,6 +21,11 @@
               {% block content %}
                 
               {% endblock  %}
+              {% if is_paginated %}
+              {% block paggination %}
+              {% include "includes/paggination.html" %}
+              {% endblock  %}
+              {% endif %}
             </div>
         </div>
     </div>    
