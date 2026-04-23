@@ -1,14 +1,16 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404,HttpRequest
 from catalog.models import Book, Author, LiteraryFormat
 from django.views import generic
 
 
-def index(request):
+def index(request: HttpRequest):
+    request.session["count"] = request.session.get("count", 0) + 1
     context = {
         "num_authors": Author.objects.count(),
         "num_books": Book.objects.count(),
         "num_formats": LiteraryFormat.objects.count(),
+        "count": request.session["count"]
     }
     return render(request, "catalog/index.html", context=context)
 
@@ -48,3 +50,6 @@ def search_books(request):
 
 class BookDetailView(generic.DetailView):
     model = Book
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
