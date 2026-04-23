@@ -127,3 +127,5 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = "catalog.Author"
+
+LOGIN_REDIRECT_URL = '/catalog/'

@@ -1,4 +1,14 @@
 <ul class="sidebar-nav">
+    {% if user.is_authenticated %}
+    <li>User: <a href="{% url 'catalog:author-detail' user.id %}">{{ user.username }}</a></li>
+    <form action="{% url "logout" %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Log out">
+    </form>
+    {% else %}
+    <li><a href="{% url 'login' %}">Login</a></li>
+    {% endif %}
+    <br>
     <li><a href="{% url 'catalog:index' %}">Home</a></li>
     <li><a href="{% url "catalog:book-list" %}">All books</a></li>
     <li><a href="{% url "catalog:author-list" %}">All authors</a></li>
