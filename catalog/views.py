@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpRequest, HttpResponseRedirect
 from catalog.models import Book, Author, LiteraryFormat
 from django.views import generic
-from catalog.forms import FormatForm
+from catalog.forms import FormatForm, SearchBook
 from django.urls import reverse, reverse_lazy
 
 
@@ -28,6 +28,19 @@ class BookListView(generic.ListView):
     template_name = "catalog/book-list.html"
     context_object_name = "books"
     paginate_by = 1
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = SearchBook(self.request.GET or None) 
+        return context
+    
+    def get_queryset(self):
+        form = SearchBook(self.request.GET or None)
+        queryset = Book.objects.all()
+        if form.is_valid():
+            queryset = queryset.filter(title__icontains=form.cleaned_data["title"])
+        return queryset 
+    
 
 class AuthorListView(generic.ListView):
     model = Author

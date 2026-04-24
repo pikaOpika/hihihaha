@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <h1>Book List</h1>
+
+<p>Search: <form action="" novalidate>
+  {{ form }}
+  <input type="submit" value="search">
+</form></p>
+
 <ul>
 {% for book in books %}
 
