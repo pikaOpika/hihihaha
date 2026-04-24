@@ -1,6 +1,6 @@
 from django.urls import path
 from catalog.views import (
-    index, get_book, search_books, BookDetailView, format_create,
+    index, get_book, search_books, BookDetailView, book_create ,format_create,
     LiteraryFormatListView, BookListView, AuthorListView,
     AuthorDetailView, LiteraryFormatCreateView, LiteraryFormatUpdateView,
     LiteraryFormatDeleteView
@@ -16,6 +16,7 @@ urlpatterns = [
     path('literary-formats/<int:pk>/update/', LiteraryFormatUpdateView.as_view(), name="format-update"),
     path('literary-formats/<int:pk>/delete/', LiteraryFormatDeleteView.as_view(), name="format-delete"),
     path('books/', BookListView.as_view(), name="book-list"),
+    path('books/create/', book_create, name="book-create"),
     path('books/<int:pk>/', BookDetailView.as_view(), name="book-detail"),
     path('authors/', AuthorListView.as_view(), name="author-list"),
     path('authors/<int:pk>/', AuthorDetailView.as_view(), name="author-detail"),

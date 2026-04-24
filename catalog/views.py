@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpRequest, HttpResponseRedirect
 from catalog.models import Book, Author, LiteraryFormat
 from django.views import generic
-from catalog.forms import FormatForm, SearchBook
+from catalog.forms import FormatForm, SearchBook, BookForm
 from django.urls import reverse, reverse_lazy
 
 
@@ -99,4 +99,15 @@ def format_create(request: HttpRequest):
         return HttpResponseRedirect(reverse("catalog:format-list"))
     context["form"] = form
     return render(request, "catalog/format_form.html", context=context)
+
+
+def book_create(request: HttpRequest):
+    context = {}
+    form = BookForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse("catalog:book-list"))
+    context["form"] = form
+    return render(request, "catalog/book_form.html", context=context)
+
 

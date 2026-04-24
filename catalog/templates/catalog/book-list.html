@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Book List</h1>
+<h1>Book List <a href="{% url "catalog:book-create" %}">+</a></h1>
 
 <p>Search: <form action="" novalidate>
   {{ form }}
