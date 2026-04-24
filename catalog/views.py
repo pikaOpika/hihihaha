@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404,HttpRequest
+from django.http import HttpResponse, Http404, HttpRequest, HttpResponseRedirect
 from catalog.models import Book, Author, LiteraryFormat
 from django.views import generic
+from catalog.forms import FormatForm
+from django.urls import reverse, reverse_lazy
 
 
 def index(request: HttpRequest):
@@ -53,3 +55,35 @@ class BookDetailView(generic.DetailView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+
+class LiteraryFormatCreateView(generic.CreateView):
+    model = LiteraryFormat
+    fields = "__all__"
+    success_url = reverse_lazy("catalog:format-list")
+    template_name = "catalog/format_form.html"
+
+
+
+class LiteraryFormatUpdateView(generic.UpdateView):
+    model = LiteraryFormat
+    fields = "__all__"
+    success_url = reverse_lazy("catalog:format-list")
+    template_name = "catalog/format_form.html"
+
+
+class LiteraryFormatDeleteView(generic.DeleteView):
+    model = LiteraryFormat
+    success_url = reverse_lazy("catalog:format-list")
+    template_name = "catalog/confirm_delete_format.html"
+
+
+
+def format_create(request: HttpRequest):
+    context = {}
+    form = FormatForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse("catalog:format-list"))
+    context["form"] = form
+    return render(request, "catalog/format_form.html", context=context)
+

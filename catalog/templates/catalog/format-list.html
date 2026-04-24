@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Literary Formats List</h1>
+<h1>Literary Formats List <a href="{% url "catalog:format-create" %}">+</a></h1> 
 <ul>
 {% for format in formats %}
 
-<li>{{ format }}</li>
+<li>{{ format }} <a href="{% url "catalog:format-update" format.id %}">Update</a> <a href="{% url "catalog:format-delete" format.id %}">Delete</a></li>
 {% empty %}
 No literary formats
 {% endfor %}
